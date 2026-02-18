@@ -68,41 +68,33 @@ export default function InstagramSimulator({
       </div>
 
       {/* Chat area */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto px-3 py-3 bg-ig-bg"
-        style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
-      >
-        {messages.map((msg) => {
-          const isMe = msg.sender === "me";
-          return (
-            <div
-              key={msg.id}
-              className="animate-message-in"
-              style={{ alignSelf: isMe ? 'flex-end' : 'flex-start', maxWidth: '75%' }}
-            >
-              {msg.image ? (
-                <div className="rounded-[20px] overflow-hidden">
-                  <img src={msg.image} alt="" className="max-w-full w-[200px] object-cover" />
-                </div>
-              ) : (
-                <div
-                  className={`px-3 py-2 rounded-[20px] text-[14px] leading-[18px] break-words ${
-                    isMe
-                      ? "bg-ig-bubble-out text-primary-foreground"
-                      : "bg-ig-bubble-in text-foreground"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-1.5 bg-ig-bg">
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"} animate-message-in`}
+          >
+            {msg.image ? (
+              <div className="max-w-[70%] rounded-[20px] overflow-hidden">
+                <img src={msg.image} alt="" className="max-w-full w-[200px] object-cover" />
+              </div>
+            ) : (
+              <div
+                className={`max-w-[70%] px-3 py-2 rounded-[20px] text-[14px] leading-[18px] ${
+                  msg.sender === "me"
+                    ? "bg-ig-bubble-out text-primary-foreground"
+                    : "bg-ig-bubble-in text-foreground"
+                }`}
+              >
+                {msg.text}
+              </div>
+            )}
+          </div>
+        ))}
 
         {/* Typing indicator */}
         {isTyping && typingSender === "them" && (
-          <div style={{ alignSelf: 'flex-start' }} className="animate-message-in">
+          <div className="flex justify-start animate-message-in">
             <div className="bg-ig-bubble-in px-4 py-3 rounded-[20px] flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground typing-dot-1" />
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground typing-dot-2" />
@@ -113,15 +105,12 @@ export default function InstagramSimulator({
       </div>
 
       {/* Input area */}
-      <div className="flex items-center gap-2 px-3 py-2.5 bg-ig-bg">
-        <div className="flex-1 flex items-center gap-2 border border-border/40 rounded-full px-3 py-2 min-h-[40px] min-w-0">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-accent flex items-center justify-center shrink-0">
+      <div className="flex items-end gap-2 px-3 py-2.5 bg-ig-bg">
+        <div className="flex-1 flex items-center gap-2 border border-border/40 rounded-full px-3 py-2 min-h-[40px]">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-accent flex items-center justify-center">
             <span className="text-white text-xs">📷</span>
           </div>
-          <div
-            style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', direction: 'ltr', textAlign: 'left' }}
-            className="text-[14px] text-foreground"
-          >
+          <div className="flex-1 text-[14px] text-foreground min-h-[20px]">
             {isTyping && typingSender === "me" ? (
               <span>
                 {currentTypingText}
