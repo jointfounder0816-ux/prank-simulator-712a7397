@@ -98,7 +98,17 @@ const Index = () => {
         >
           <X className="w-5 h-5" />
         </button>
-        <div ref={simulatorRef}>
+        <div
+          ref={simulatorRef}
+          style={{
+            aspectRatio: "9 / 16",
+            height: "100vh",
+            width: "calc(100vh * 9 / 16)",
+            margin: "0 auto",
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
           <SimulatorComponent
             contactName={contactName}
             contactAvatar={contactAvatar}
@@ -135,7 +145,17 @@ const Index = () => {
         onShowKeyboardChange={setShowKeyboard}
       />
 
-      <div className="shrink-0" ref={simulatorRef}>
+      <div
+        ref={simulatorRef}
+        style={{
+          aspectRatio: "9 / 16",
+          height: "min(100vh - 48px, 812px)",
+          width: "calc(min(100vh - 48px, 812px) * 9 / 16)",
+          overflow: "hidden",
+          position: "relative",
+          flexShrink: 0,
+        }}
+      >
         <SimulatorComponent
           contactName={contactName}
           contactAvatar={contactAvatar}
