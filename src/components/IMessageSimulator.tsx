@@ -93,7 +93,7 @@ export default function IMessageSimulator({
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto overflow-x-hidden px-[16px] pb-3 hide-scrollbar"
-        style={{ backgroundColor: "#000000", paddingTop: "100px" }}
+        style={{ backgroundColor: "#000000", paddingTop: "100px", display: 'flex', flexDirection: 'column' }}
       >
         {messages.map((msg, idx) => {
           const prevMsg = messages[idx - 1];
@@ -101,7 +101,7 @@ export default function IMessageSimulator({
           const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender;
           const sameSenderAsPrev = prevMsg && prevMsg.sender === msg.sender;
           const isMe = msg.sender === "me";
-          const marginTop = idx === 0 ? "" : sameSenderAsPrev ? "mt-[2px]" : "mt-[10px]";
+          const marginTop = idx === 0 ? 0 : sameSenderAsPrev ? 2 : 10;
 
           const tailClass = isLastInGroup
             ? isMe ? "imsg-tail-me" : "imsg-tail-them"
@@ -110,14 +110,13 @@ export default function IMessageSimulator({
           return (
             <div
               key={msg.id}
-              className={`flex ${isMe ? "justify-end" : "justify-start"} ${marginTop} animate-message-in`}
+              className="animate-message-in"
+              style={{ alignSelf: isMe ? 'flex-end' : 'flex-start', maxWidth: '75%', marginTop }}
             >
               {msg.image ? (
-                <img src={msg.image} alt="" style={{ borderRadius: "1.15rem", maxWidth: "75%", width: 220, objectFit: "cover" as const }} />
+                <img src={msg.image} alt="" style={{ borderRadius: "1.15rem", maxWidth: "100%", width: 220, objectFit: "cover" as const }} />
               ) : (
-                <div
-                  className={`imsg-bubble ${isMe ? "imsg-me" : "imsg-them"} ${tailClass}`}
-                >
+                <div className={`imsg-bubble ${isMe ? "imsg-me" : "imsg-them"} ${tailClass}`}>
                   {msg.text}
                 </div>
               )}
@@ -127,7 +126,7 @@ export default function IMessageSimulator({
 
         {/* Read timestamp */}
         {messages.length > 0 && messages[messages.length - 1]?.sender === "me" && !isTyping && (
-          <div className="flex justify-end pr-[2px] mt-[2px]">
+          <div style={{ alignSelf: 'flex-end' }} className="pr-[2px] mt-[2px]">
             <span className="text-[11px] text-[#8e8e93] font-normal tracking-[-0.01em]">
               Read {formatTime()}
             </span>
@@ -136,7 +135,7 @@ export default function IMessageSimulator({
 
         {/* Typing indicator for "them" */}
         {isTyping && typingSender === "them" && (
-          <div className="flex justify-start mt-[8px] animate-message-in">
+          <div style={{ alignSelf: 'flex-start' }} className="mt-[8px] animate-message-in">
             <div className="bg-[#26262a] px-[14px] py-[10px] rounded-[18px] rounded-bl-[4px] flex items-center gap-[5px]">
               <div className="w-[8px] h-[8px] rounded-full bg-[#8e8e93] typing-dot-1" />
               <div className="w-[8px] h-[8px] rounded-full bg-[#8e8e93] typing-dot-2" />
@@ -158,7 +157,7 @@ export default function IMessageSimulator({
           className="flex-1 flex items-center rounded-full min-h-[36px] px-[14px] pr-[3px] min-w-0"
           style={{ border: "1px solid #3a3a3c" }}
         >
-          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'clip', fontSize: 16, color: 'white', fontWeight: 400 }}>
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', direction: 'ltr', textAlign: 'left', fontSize: 16, color: 'white', fontWeight: 400 }}>
             {isTyping && typingSender === "me" ? (
               <span>
                 {currentTypingText}
