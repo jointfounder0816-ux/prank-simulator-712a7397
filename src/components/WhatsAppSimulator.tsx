@@ -79,7 +79,7 @@ export default function WhatsAppSimulator({
             className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"} ${marginTop} animate-message-in`}
           >
             <div
-              className={`max-w-[80%] w-fit ${msg.image ? "p-[3px]" : "px-[9px] pt-[6px] pb-[8px]"} text-[14.2px] leading-[19px] relative ${
+              className={`max-w-[75%] w-fit ${msg.image ? "p-[3px]" : "px-[9px] pt-[6px] pb-[8px]"} text-[14.2px] leading-[19px] relative break-words ${
                 msg.sender === "me"
                   ? `bg-[#005c4b] text-[#e9edef] ${isLastInGroup ? "rounded-[7.5px] rounded-tr-none" : "rounded-[7.5px]"}`
                   : `bg-[#202c33] text-[#e9edef] ${isLastInGroup ? "rounded-[7.5px] rounded-tl-none" : "rounded-[7.5px]"}`
@@ -120,18 +120,20 @@ export default function WhatsAppSimulator({
       </div>
 
       {/* Input area */}
-      <div className="flex items-end gap-[6px] px-[6px] py-[6px]" style={{ backgroundColor: "#0b141a" }}>
+      <div className="flex items-center gap-[6px] px-[6px] py-[6px]" style={{ backgroundColor: "#0b141a" }}>
         <div className="flex-1 flex items-center gap-[6px] bg-[#1f2c34] rounded-full px-[12px] py-[10px] min-h-[42px]">
           <Smile className="w-[24px] h-[24px] text-[#8696a0] shrink-0" />
-          <div className="flex-1 text-[15px] text-[#e9edef] min-h-[20px]">
-            {isTyping && typingSender === "me" ? (
-              <span>
-                {currentTypingText}
-                <span className="inline-block w-[2px] h-[15px] bg-[#00a884] animate-pulse ml-[1px] align-text-bottom" />
-              </span>
-            ) : (
-              <span className="text-[#8696a0]">Mensagem</span>
-            )}
+          <div className="flex-1 overflow-hidden">
+            <div className="text-[15px] text-[#e9edef] whitespace-nowrap overflow-hidden">
+              {isTyping && typingSender === "me" ? (
+                <span>
+                  {currentTypingText}
+                  <span className="inline-block w-[2px] h-[15px] bg-[#00a884] animate-pulse ml-[1px] align-text-bottom" />
+                </span>
+              ) : (
+                <span className="text-[#8696a0]">Mensagem</span>
+              )}
+            </div>
           </div>
           <Paperclip className="w-[22px] h-[22px] text-[#8696a0] shrink-0 rotate-[135deg]" />
           <Camera className="w-[22px] h-[22px] text-[#8696a0] shrink-0" />
