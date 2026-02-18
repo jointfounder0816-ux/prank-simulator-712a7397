@@ -80,7 +80,7 @@ export default function InstagramSimulator({
               </div>
             ) : (
               <div
-                className={`max-w-[70%] px-3 py-2 rounded-[20px] text-[14px] leading-[18px] ${
+                className={`max-w-[70%] w-fit px-3 py-2 rounded-[20px] text-[14px] leading-[18px] ${
                   msg.sender === "me"
                     ? "bg-ig-bubble-out text-primary-foreground"
                     : "bg-ig-bubble-in text-foreground"
