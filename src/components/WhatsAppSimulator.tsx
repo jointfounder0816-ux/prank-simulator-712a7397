@@ -34,7 +34,7 @@ export default function WhatsAppSimulator({
   }, [messages, isTyping, currentTypingText]);
 
   return (
-    <div className="w-[375px] h-[812px] mx-auto overflow-hidden bg-[#0b141a] flex flex-col shrink-0">
+    <div className="w-full h-full overflow-hidden bg-[#0b141a] flex flex-col">
       {/* WhatsApp header */}
       <div className="flex items-center gap-2 px-2 py-2 bg-[#1f2c34]">
         <ArrowLeft className="w-5 h-5 text-[#00a884]" />
