@@ -10,6 +10,7 @@ interface Props {
   isTyping: boolean;
   typingSender: "me" | "them";
   currentTypingText: string;
+  showKeyboard?: boolean;
 }
 
 function formatTime() {
@@ -24,6 +25,7 @@ export default function WhatsAppSimulator({
   isTyping,
   typingSender,
   currentTypingText,
+  showKeyboard = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -147,6 +149,7 @@ export default function WhatsAppSimulator({
       <ChatKeyboard
         currentText={currentTypingText}
         isActive={isTyping && typingSender === "me"}
+        showAlways={showKeyboard}
       />
     </div>
   );

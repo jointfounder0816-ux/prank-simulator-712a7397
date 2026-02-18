@@ -16,6 +16,7 @@ const Index = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [pendingScript, setPendingScript] = useState("");
   const [pendingSpeed, setPendingSpeed] = useState(1);
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const playback = useChatPlayback();
   const recorder = useRecorder();
   const simulatorRef = useRef<HTMLDivElement>(null);
@@ -105,6 +106,7 @@ const Index = () => {
             isTyping={displayState.isTyping}
             typingSender={displayState.typingSender}
             currentTypingText={displayState.currentTypingText}
+            showKeyboard={showKeyboard}
           />
         </div>
       </div>
@@ -129,6 +131,8 @@ const Index = () => {
         onContactAvatarChange={setContactAvatar}
         images={images}
         onImagesChange={setImages}
+        showKeyboard={showKeyboard}
+        onShowKeyboardChange={setShowKeyboard}
       />
 
       <div className="shrink-0" ref={simulatorRef}>
@@ -139,6 +143,7 @@ const Index = () => {
           isTyping={displayState.isTyping}
           typingSender={displayState.typingSender}
           currentTypingText={displayState.currentTypingText}
+          showKeyboard={showKeyboard}
         />
       </div>
 

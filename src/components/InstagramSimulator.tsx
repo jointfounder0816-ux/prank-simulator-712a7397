@@ -9,6 +9,7 @@ interface Props {
   isTyping: boolean;
   typingSender: "me" | "them";
   currentTypingText: string;
+  showKeyboard?: boolean;
 }
 
 function formatTime() {

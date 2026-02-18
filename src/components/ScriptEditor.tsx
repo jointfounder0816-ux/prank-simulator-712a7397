@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Play, RotateCcw, Zap, ImagePlus, X, Video, Maximize, UserCircle } from "lucide-react";
+import { Play, RotateCcw, Zap, ImagePlus, X, Video, Maximize, UserCircle, Keyboard } from "lucide-react";
 
 interface Props {
   onPlay: (script: string, speed: number) => void;
@@ -17,6 +17,8 @@ interface Props {
   onContactAvatarChange: (avatar: string | null) => void;
   images: Record<string, string>;
   onImagesChange: (images: Record<string, string>) => void;
+  showKeyboard: boolean;
+  onShowKeyboardChange: (v: boolean) => void;
 }
 
 const EXAMPLE_SCRIPT = `Nome: João
@@ -45,6 +47,8 @@ export default function ScriptEditor({
   onContactAvatarChange,
   images,
   onImagesChange,
+  showKeyboard,
+  onShowKeyboardChange,
 }: Props) {
   const [script, setScript] = useState(EXAMPLE_SCRIPT);
   const [speed, setSpeed] = useState(1);
@@ -278,6 +282,26 @@ export default function ScriptEditor({
           <RotateCcw className="w-4 h-4" />
         </button>
       </div>
+
+      {/* Keyboard toggle */}
+      {platform !== "instagram" && (
+        <button
+          onClick={() => onShowKeyboardChange(!showKeyboard)}
+          className={`w-full flex items-center justify-between gap-2 py-2.5 px-3 rounded-lg text-sm font-medium transition-colors border ${
+            showKeyboard
+              ? "bg-primary/10 text-primary border-primary/30"
+              : "bg-muted text-muted-foreground border-border/50 hover:text-foreground"
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Keyboard className="w-4 h-4" />
+            Mostrar teclado durante toda a conversa
+          </span>
+          <span className={`w-8 h-4 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${showKeyboard ? "bg-primary" : "bg-muted-foreground/30"}`} style={{ height: 18 }}>
+            <span className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${showKeyboard ? "translate-x-[14px]" : "translate-x-0"}`} style={{ width: 14, height: 14 }} />
+          </span>
+        </button>
+      )}
 
       {/* Preview button */}
       <button

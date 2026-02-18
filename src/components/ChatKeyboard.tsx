@@ -12,12 +12,6 @@ const ROWS_UPPER = [
   ["⇧", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
 ];
 
-interface Props {
-  currentText: string;
-  isActive: boolean;
-  theme?: "whatsapp" | "ios";
-}
-
 const themes = {
   whatsapp: {
     bg: "bg-[#1b2b36]",
@@ -41,7 +35,14 @@ const themes = {
   },
 };
 
-export default function ChatKeyboard({ currentText, isActive, theme = "whatsapp" }: Props) {
+interface Props {
+  currentText: string;
+  isActive: boolean;
+  showAlways?: boolean;
+  theme?: "whatsapp" | "ios";
+}
+
+export default function ChatKeyboard({ currentText, isActive, showAlways = false, theme = "whatsapp" }: Props) {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const t = themes[theme];
   const isIOS = theme === "ios";
@@ -59,7 +60,7 @@ export default function ChatKeyboard({ currentText, isActive, theme = "whatsapp"
     return () => clearTimeout(timer);
   }, [currentText, isActive]);
 
-  if (!isActive) return null;
+  if (!isActive && !showAlways) return null;
 
   const isKeyPressed = (key: string) => {
     if (!activeKey) return false;
