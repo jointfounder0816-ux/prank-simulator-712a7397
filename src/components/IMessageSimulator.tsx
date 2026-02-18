@@ -155,20 +155,18 @@ export default function IMessageSimulator({
         </div>
 
         <div
-          className="flex-1 flex items-center rounded-full min-h-[36px] px-[14px] pr-[3px]"
+          className="flex-1 flex items-center rounded-full min-h-[36px] px-[14px] pr-[3px] min-w-0"
           style={{ border: "1px solid #3a3a3c" }}
         >
-          <div className="flex-1 overflow-hidden">
-            <div className="text-[16px] text-white whitespace-nowrap overflow-hidden" style={{ fontWeight: 400 }}>
-              {isTyping && typingSender === "me" ? (
-                <span>
-                  {currentTypingText}
-                  <span className="inline-block w-[1.5px] h-[16px] bg-[#0a84ff] animate-pulse ml-[1px] align-text-bottom" />
-                </span>
-              ) : (
-                <span style={{ color: "#8e8e93" }}>iMessage</span>
-              )}
-            </div>
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'clip', fontSize: 16, color: 'white', fontWeight: 400 }}>
+            {isTyping && typingSender === "me" ? (
+              <span>
+                {currentTypingText}
+                <span className="inline-block w-[1.5px] h-[16px] bg-[#0a84ff] animate-pulse ml-[1px] align-text-bottom" />
+              </span>
+            ) : (
+              <span style={{ color: "#8e8e93" }}>iMessage</span>
+            )}
           </div>
 
           <div className="w-[28px] h-[28px] flex items-center justify-center shrink-0">

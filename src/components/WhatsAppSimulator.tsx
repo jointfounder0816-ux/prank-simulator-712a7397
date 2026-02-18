@@ -121,19 +121,17 @@ export default function WhatsAppSimulator({
 
       {/* Input area */}
       <div className="flex items-center gap-[6px] px-[6px] py-[6px]" style={{ backgroundColor: "#0b141a" }}>
-        <div className="flex-1 flex items-center gap-[6px] bg-[#1f2c34] rounded-full px-[12px] py-[10px] min-h-[42px]">
+        <div className="flex-1 flex items-center gap-[6px] bg-[#1f2c34] rounded-full px-[12px] py-[10px] min-h-[42px] min-w-0">
           <Smile className="w-[24px] h-[24px] text-[#8696a0] shrink-0" />
-          <div className="flex-1 overflow-hidden">
-            <div className="text-[15px] text-[#e9edef] whitespace-nowrap overflow-hidden">
-              {isTyping && typingSender === "me" ? (
-                <span>
-                  {currentTypingText}
-                  <span className="inline-block w-[2px] h-[15px] bg-[#00a884] animate-pulse ml-[1px] align-text-bottom" />
-                </span>
-              ) : (
-                <span className="text-[#8696a0]">Mensagem</span>
-              )}
-            </div>
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'clip' }} className="text-[15px] text-[#e9edef]">
+            {isTyping && typingSender === "me" ? (
+              <span>
+                {currentTypingText}
+                <span className="inline-block w-[2px] h-[15px] bg-[#00a884] animate-pulse ml-[1px] align-text-bottom" />
+              </span>
+            ) : (
+              <span className="text-[#8696a0]">Mensagem</span>
+            )}
           </div>
           <Paperclip className="w-[22px] h-[22px] text-[#8696a0] shrink-0 rotate-[135deg]" />
           <Camera className="w-[22px] h-[22px] text-[#8696a0] shrink-0" />

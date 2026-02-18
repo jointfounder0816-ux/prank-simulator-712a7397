@@ -106,21 +106,19 @@ export default function InstagramSimulator({
 
       {/* Input area */}
       <div className="flex items-center gap-2 px-3 py-2.5 bg-ig-bg">
-        <div className="flex-1 flex items-center gap-2 border border-border/40 rounded-full px-3 py-2 min-h-[40px]">
+        <div className="flex-1 flex items-center gap-2 border border-border/40 rounded-full px-3 py-2 min-h-[40px] min-w-0">
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-accent flex items-center justify-center shrink-0">
             <span className="text-white text-xs">📷</span>
           </div>
-          <div className="flex-1 overflow-hidden">
-            <div className="text-[14px] text-foreground whitespace-nowrap overflow-hidden">
-              {isTyping && typingSender === "me" ? (
-                <span>
-                  {currentTypingText}
-                  <span className="inline-block w-[2px] h-[14px] bg-foreground animate-pulse ml-[1px] align-text-bottom" />
-                </span>
-              ) : (
-                <span className="text-muted-foreground">Mensagem...</span>
-              )}
-            </div>
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'clip' }} className="text-[14px] text-foreground">
+            {isTyping && typingSender === "me" ? (
+              <span>
+                {currentTypingText}
+                <span className="inline-block w-[2px] h-[14px] bg-foreground animate-pulse ml-[1px] align-text-bottom" />
+              </span>
+            ) : (
+              <span className="text-muted-foreground">Mensagem...</span>
+            )}
           </div>
           {isTyping && typingSender === "me" ? (
             <Send className="w-5 h-5 text-ig-bubble-out shrink-0" />
