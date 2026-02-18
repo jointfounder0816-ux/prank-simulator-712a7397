@@ -79,7 +79,7 @@ export default function WhatsAppSimulator({
             className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"} ${marginTop} animate-message-in`}
           >
             <div
-              className={`max-w-[80%] ${msg.image ? "p-[3px]" : "px-[9px] pt-[6px] pb-[8px]"} text-[14.2px] leading-[19px] relative ${
+              className={`max-w-[80%] w-fit ${msg.image ? "p-[3px]" : "px-[9px] pt-[6px] pb-[8px]"} text-[14.2px] leading-[19px] relative ${
                 msg.sender === "me"
                   ? `bg-[#005c4b] text-[#e9edef] ${isLastInGroup ? "rounded-[7.5px] rounded-tr-none" : "rounded-[7.5px]"}`
                   : `bg-[#202c33] text-[#e9edef] ${isLastInGroup ? "rounded-[7.5px] rounded-tl-none" : "rounded-[7.5px]"}`
