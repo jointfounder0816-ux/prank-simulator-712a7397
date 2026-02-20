@@ -1,7 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import ScriptEditor from "@/components/ScriptEditor";
-import WhatsAppSimulator from "@/components/WhatsAppSimulator";
-import InstagramSimulator from "@/components/InstagramSimulator";
 import IMessageSimulator from "@/components/IMessageSimulator";
 import { useChatPlayback, parseScript } from "@/hooks/useChatPlayback";
 import { useRecorder } from "@/hooks/useRecorder";
@@ -9,7 +7,6 @@ import { X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const Index = () => {
-  const [platform, setPlatform] = useState<"whatsapp" | "instagram" | "imessage">("whatsapp");
   const [contactName, setContactName] = useState("João");
   const [images, setImages] = useState<Record<string, string>>({});
   const [contactAvatar, setContactAvatar] = useState<string | null>(null);
@@ -83,12 +80,6 @@ const Index = () => {
         currentTypingText: playback.currentTypingText,
       };
 
-  const SimulatorComponent = platform === "whatsapp"
-    ? WhatsAppSimulator
-    : platform === "imessage"
-      ? IMessageSimulator
-      : InstagramSimulator;
-
   if (previewMode) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
@@ -99,7 +90,7 @@ const Index = () => {
           <X className="w-5 h-5" />
         </button>
         <div ref={simulatorRef}>
-          <SimulatorComponent
+          <IMessageSimulator
             contactName={contactName}
             contactAvatar={contactAvatar}
             messages={displayState.visibleMessages}
@@ -123,8 +114,6 @@ const Index = () => {
         isPlaying={playback.isPlaying}
         isExporting={recorder.isExporting}
         exportProgress={recorder.progress}
-        platform={platform}
-        onPlatformChange={setPlatform}
         contactName={contactName}
         onContactNameChange={setContactName}
         contactAvatar={contactAvatar}
@@ -136,7 +125,7 @@ const Index = () => {
       />
 
       <div className="shrink-0" ref={simulatorRef}>
-        <SimulatorComponent
+        <IMessageSimulator
           contactName={contactName}
           contactAvatar={contactAvatar}
           messages={displayState.visibleMessages}
@@ -170,3 +159,4 @@ const Index = () => {
 };
 
 export default Index;
+

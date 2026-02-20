@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Play, RotateCcw, Zap, ImagePlus, X, Video, Maximize, UserCircle, Keyboard } from "lucide-react";
+import { Play, RotateCcw, Zap, ImagePlus, X, Video, Maximize, UserCircle, Keyboard, Pencil, Check } from "lucide-react";
 
 interface Props {
   onPlay: (script: string, speed: number) => void;
@@ -9,8 +9,6 @@ interface Props {
   isPlaying: boolean;
   isExporting: boolean;
   exportProgress: { current: number; total: number } | null;
-  platform: "whatsapp" | "instagram" | "imessage";
-  onPlatformChange: (p: "whatsapp" | "instagram" | "imessage") => void;
   contactName: string;
   onContactNameChange: (name: string) => void;
   contactAvatar: string | null;
@@ -39,8 +37,6 @@ export default function ScriptEditor({
   onStartPreview,
   isPlaying,
   isExporting,
-  platform,
-  onPlatformChange,
   contactName,
   onContactNameChange,
   contactAvatar,
@@ -52,6 +48,8 @@ export default function ScriptEditor({
 }: Props) {
   const [script, setScript] = useState(EXAMPLE_SCRIPT);
   const [speed, setSpeed] = useState(1);
+  const [editingImageName, setEditingImageName] = useState<string | null>(null);
+  const [editingValue, setEditingValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const imageCounter = useRef(Object.keys(images).length + 1);
@@ -76,6 +74,25 @@ export default function ScriptEditor({
     onImagesChange(newImages);
   };
 
+  const startRename = (name: string) => {
+    setEditingImageName(name);
+    setEditingValue(name);
+  };
+
+  const confirmRename = (oldName: string) => {
+    const newName = editingValue.trim();
+    if (!newName || newName === oldName || images[newName]) {
+      setEditingImageName(null);
+      return;
+    }
+    const newImages: Record<string, string> = {};
+    Object.entries(images).forEach(([k, v]) => {
+      newImages[k === oldName ? newName : k] = v;
+    });
+    onImagesChange(newImages);
+    setEditingImageName(null);
+  };
+
   const busy = isPlaying || isExporting;
 
   return (
@@ -85,40 +102,6 @@ export default function ScriptEditor({
         <p className="text-sm text-muted-foreground">
           Simule conversas realistas para seus vídeos
         </p>
-      </div>
-
-      {/* Platform toggle */}
-      <div className="flex gap-1 bg-muted rounded-lg p-1">
-        <button
-          onClick={() => onPlatformChange("whatsapp")}
-          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-            platform === "whatsapp"
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          WhatsApp
-        </button>
-        <button
-          onClick={() => onPlatformChange("instagram")}
-          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-            platform === "instagram"
-              ? "bg-accent text-accent-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Instagram
-        </button>
-        <button
-          onClick={() => onPlatformChange("imessage")}
-          className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-            platform === "imessage"
-              ? "bg-[#0a84ff] text-white shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          iMessage
-        </button>
       </div>
 
       {/* Contact name + avatar */}
@@ -197,7 +180,7 @@ export default function ScriptEditor({
 
       {/* Image uploads */}
       <div>
-        <label className="text-xs font-medium text-muted-foreground mb-1 block">
+        <label className="text-xs font-medium text-muted-foreground mb-2 block">
           Imagens
         </label>
         <input
@@ -208,31 +191,67 @@ export default function ScriptEditor({
           onChange={handleImageUpload}
           className="hidden"
         />
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-1.5 bg-muted text-muted-foreground px-3 py-2 rounded-lg text-sm hover:text-foreground transition-colors mb-2"
-        >
-          <ImagePlus className="w-4 h-4" />
-          Adicionar imagem
-        </button>
         {Object.keys(images).length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3 mb-3">
             {Object.entries(images).map(([name, url]) => (
-              <div key={name} className="relative group">
-                <img src={url} alt={name} className="w-16 h-16 object-cover rounded-lg border border-border/40" />
-                <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-[9px] text-center py-0.5 rounded-b-lg">
-                  {name}
-                </span>
-                <button
-                  onClick={() => removeImage(name)}
-                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="w-3 h-3" />
-                </button>
+              <div key={name} className="flex flex-col items-center gap-1 group">
+                <div className="relative">
+                  <img src={url} alt={name} className="w-16 h-16 object-cover rounded-lg border border-border/40" />
+                  <button
+                    onClick={() => removeImage(name)}
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+                {editingImageName === name ? (
+                  <div className="flex items-center gap-1">
+                    <input
+                      autoFocus
+                      value={editingValue}
+                      onChange={(e) => setEditingValue(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") confirmRename(name);
+                        if (e.key === "Escape") setEditingImageName(null);
+                      }}
+                      className="w-16 text-[10px] text-center bg-muted border border-primary/50 rounded px-1 py-0.5 text-foreground focus:outline-none"
+                    />
+                    <button onClick={() => confirmRename(name)} className="text-primary">
+                      <Check className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => startRename(name)}
+                    className="flex items-center gap-0.5 text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                    title="Renomear"
+                  >
+                    <span>{name}</span>
+                    <Pencil className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100" />
+                  </button>
+                )}
               </div>
             ))}
+            {/* Add more button inside the grid */}
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-16 h-16 rounded-lg border-2 border-dashed border-border/60 flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
+            >
+              <ImagePlus className="w-5 h-5" />
+              <span className="text-[9px]">Adicionar</span>
+            </button>
           </div>
+        )}
+        {Object.keys(images).length === 0 && (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-1.5 bg-muted text-muted-foreground px-3 py-2 rounded-lg text-sm hover:text-foreground transition-colors"
+          >
+            <ImagePlus className="w-4 h-4" />
+            Adicionar imagem
+          </button>
         )}
       </div>
 
@@ -284,24 +303,22 @@ export default function ScriptEditor({
       </div>
 
       {/* Keyboard toggle */}
-      {platform !== "instagram" && (
-        <button
-          onClick={() => onShowKeyboardChange(!showKeyboard)}
-          className={`w-full flex items-center justify-between gap-2 py-2.5 px-3 rounded-lg text-sm font-medium transition-colors border ${
-            showKeyboard
-              ? "bg-primary/10 text-primary border-primary/30"
-              : "bg-muted text-muted-foreground border-border/50 hover:text-foreground"
-          }`}
-        >
-          <span className="flex items-center gap-2">
-            <Keyboard className="w-4 h-4" />
-            Mostrar teclado durante toda a conversa
-          </span>
-          <span className={`w-8 h-4 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${showKeyboard ? "bg-primary" : "bg-muted-foreground/30"}`} style={{ height: 18 }}>
-            <span className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${showKeyboard ? "translate-x-[14px]" : "translate-x-0"}`} style={{ width: 14, height: 14 }} />
-          </span>
-        </button>
-      )}
+      <button
+        onClick={() => onShowKeyboardChange(!showKeyboard)}
+        className={`w-full flex items-center justify-between gap-2 py-2.5 px-3 rounded-lg text-sm font-medium transition-colors border ${
+          showKeyboard
+            ? "bg-primary/10 text-primary border-primary/30"
+            : "bg-muted text-muted-foreground border-border/50 hover:text-foreground"
+        }`}
+      >
+        <span className="flex items-center gap-2">
+          <Keyboard className="w-4 h-4" />
+          Mostrar teclado durante toda a conversa
+        </span>
+        <span className={`w-8 h-4 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${showKeyboard ? "bg-primary" : "bg-muted-foreground/30"}`} style={{ height: 18 }}>
+          <span className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${showKeyboard ? "translate-x-[14px]" : "translate-x-0"}`} style={{ width: 14, height: 14 }} />
+        </span>
+      </button>
 
       {/* Preview button */}
       <button
@@ -315,3 +332,4 @@ export default function ScriptEditor({
     </div>
   );
 }
+
