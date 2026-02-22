@@ -102,7 +102,11 @@ export default function IMessageSimulator({
             if (messages[i].sender === "me") { lastMeIdx = i; break; }
           }
           // Hide "Delivered" only when typing a new "me" message
-          const hideDelivered = isTyping && typingSender === "me";
+          // Find second-to-last "me" message index - if it exists, hide its Delivered
+          let secondLastMeIdx = -1;
+          for (let i = lastMeIdx - 1; i >= 0; i--) {
+            if (messages[i].sender === "me") { secondLastMeIdx = i; break; }
+          }
 
           return messages.map((msg, idx) => {
             const prevMsg = messages[idx - 1];
@@ -116,7 +120,7 @@ export default function IMessageSimulator({
               ? isMe ? "imsg-tail-me" : "imsg-tail-them"
               : "imsg-no-tail";
 
-            const showDelivered = idx === lastMeIdx && !hideDelivered;
+            const showDelivered = idx === lastMeIdx;
 
             return (
               <div key={msg.id}>
