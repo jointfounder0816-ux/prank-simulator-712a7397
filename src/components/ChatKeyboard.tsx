@@ -256,7 +256,7 @@ export default function ChatKeyboard({ currentText, isActive, showAlways = false
             😊
           </div>
           <div className={`flex-1 h-[42px] flex items-center justify-center rounded-[5px] text-[15px] transition-all duration-75 ${activeKey === " " ? t.spacePressed : t.space}`}>
-            Português
+            English
           </div>
           <div className={`w-[70px] h-[42px] flex items-center justify-center rounded-[5px] ${t.special} text-[15px]`}>
             return

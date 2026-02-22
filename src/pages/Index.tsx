@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const Index = () => {
-  const [contactName, setContactName] = useState("João");
+  const [contactName, setContactName] = useState("John");
   const [images, setImages] = useState<Record<string, string>>({});
   const [contactAvatar, setContactAvatar] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState(false);
@@ -21,7 +21,7 @@ const Index = () => {
   const handlePlay = useCallback(
     (script: string, speed: number) => {
       const parsed = parseScript(script, images);
-      if (parsed.contact !== "Contato") setContactName(parsed.contact);
+    if (parsed.contact !== "Contact") setContactName(parsed.contact);
       playback.play(parsed.messages, speed);
     },
     [playback, images]
@@ -31,7 +31,7 @@ const Index = () => {
     (script: string, speed: number) => {
       if (!simulatorRef.current) return;
       const parsed = parseScript(script, images);
-      if (parsed.contact !== "Contato") setContactName(parsed.contact);
+      if (parsed.contact !== "Contact") setContactName(parsed.contact);
       playback.reset();
       recorder.startExport(simulatorRef.current, parsed.messages, speed);
     },
@@ -41,7 +41,7 @@ const Index = () => {
   const handleStartPreview = useCallback(
     (script: string, speed: number) => {
       const parsed = parseScript(script, images);
-      if (parsed.contact !== "Contato") setContactName(parsed.contact);
+      if (parsed.contact !== "Contact") setContactName(parsed.contact);
       setPendingScript(script);
       setPendingSpeed(speed);
       playback.reset();
@@ -140,7 +140,7 @@ const Index = () => {
       {recorder.isExporting && recorder.progress && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-background rounded-2xl p-6 max-w-sm w-full mx-4 space-y-4 shadow-xl">
-            <h3 className="text-foreground font-semibold text-center">Renderizando vídeo...</h3>
+            <h3 className="text-foreground font-semibold text-center">Rendering video...</h3>
             <Progress value={(recorder.progress.current / recorder.progress.total) * 100} className="h-2" />
             <p className="text-sm text-muted-foreground text-center">
               Frame {recorder.progress.current} / {recorder.progress.total}
@@ -149,7 +149,7 @@ const Index = () => {
               onClick={recorder.cancelExport}
               className="w-full py-2 rounded-lg bg-muted text-muted-foreground text-sm hover:text-foreground transition-colors"
             >
-              Cancelar
+              Cancel
             </button>
           </div>
         </div>
