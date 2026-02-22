@@ -95,48 +95,54 @@ export default function IMessageSimulator({
         className="flex-1 overflow-y-auto overflow-x-hidden px-[16px] pb-3 hide-scrollbar"
         style={{ backgroundColor: "#000000", paddingTop: "100px" }}
       >
-        {messages.map((msg, idx) => {
-          const prevMsg = messages[idx - 1];
-          const nextMsg = messages[idx + 1];
-          const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender;
-          const sameSenderAsPrev = prevMsg && prevMsg.sender === msg.sender;
-          const isMe = msg.sender === "me";
-          const marginTop = idx === 0 ? "" : sameSenderAsPrev ? "mt-[2px]" : "mt-[10px]";
+        {(() => {
+          // Find the index of the last "me" message
+          let lastMeIdx = -1;
+          for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].sender === "me") { lastMeIdx = i; break; }
+          }
+          // Hide "Delivered" only when typing a new "me" message
+          const hideDelivered = isTyping && typingSender === "me";
 
-          const tailClass = isLastInGroup
-            ? isMe ? "imsg-tail-me" : "imsg-tail-them"
-            : "imsg-no-tail";
+          return messages.map((msg, idx) => {
+            const prevMsg = messages[idx - 1];
+            const nextMsg = messages[idx + 1];
+            const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender;
+            const sameSenderAsPrev = prevMsg && prevMsg.sender === msg.sender;
+            const isMe = msg.sender === "me";
+            const marginTop = idx === 0 ? "" : sameSenderAsPrev ? "mt-[2px]" : "mt-[10px]";
 
-          return (
-            <div
-              key={msg.id}
-              className={`flex ${isMe ? "justify-end" : "justify-start"} ${marginTop} animate-message-in`}
-            >
-              {msg.image ? (
-                <img src={msg.image} alt="" style={{ borderRadius: "1.15rem", maxWidth: "75%", width: 220, objectFit: "cover" as const }} />
-              ) : (
+            const tailClass = isLastInGroup
+              ? isMe ? "imsg-tail-me" : "imsg-tail-them"
+              : "imsg-no-tail";
+
+            const showDelivered = idx === lastMeIdx && !hideDelivered;
+
+            return (
+              <div key={msg.id}>
                 <div
-                  className={`imsg-bubble ${isMe ? "imsg-me" : "imsg-them"} ${tailClass}`}
+                  className={`flex ${isMe ? "justify-end" : "justify-start"} ${marginTop} animate-message-in`}
                 >
-                  {msg.text}
+                  {msg.image ? (
+                    <img src={msg.image} alt="" style={{ borderRadius: "1.15rem", maxWidth: "75%", width: 220, objectFit: "cover" as const }} />
+                  ) : (
+                    <div
+                      className={`imsg-bubble ${isMe ? "imsg-me" : "imsg-them"} ${tailClass}`}
+                    >
+                      {msg.text}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Delivered indicator - show under last "me" message if next message is not from "me" or it's the last message */}
-        {messages.length > 0 && (() => {
-          const lastMsg = messages[messages.length - 1];
-          if (lastMsg.sender !== "me") return null;
-          // Show "Delivered" only if there's no next message yet (end of visible messages)
-          return (
-            <div className="flex justify-end pr-[2px] mt-[2px]">
-              <span className="text-[11px] text-[#8e8e93] font-normal tracking-[-0.01em]">
-                Delivered
-              </span>
-            </div>
-          );
+                {showDelivered && (
+                  <div className="flex justify-end pr-[2px] mt-[2px]">
+                    <span className="text-[11px] text-[#8e8e93] font-normal tracking-[-0.01em]">
+                      Delivered
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          });
         })()}
 
         {/* Typing indicator for "them" */}
