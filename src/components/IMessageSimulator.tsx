@@ -125,14 +125,19 @@ export default function IMessageSimulator({
           );
         })}
 
-        {/* Read timestamp */}
-        {messages.length > 0 && messages[messages.length - 1]?.sender === "me" && !isTyping && (
-          <div className="flex justify-end pr-[2px] mt-[2px]">
-            <span className="text-[11px] text-[#8e8e93] font-normal tracking-[-0.01em]">
-              Read {formatTime()}
-            </span>
-          </div>
-        )}
+        {/* Delivered indicator - show under last "me" message if next message is not from "me" or it's the last message */}
+        {messages.length > 0 && (() => {
+          const lastMsg = messages[messages.length - 1];
+          if (lastMsg.sender !== "me") return null;
+          // Show "Delivered" only if there's no next message yet (end of visible messages)
+          return (
+            <div className="flex justify-end pr-[2px] mt-[2px]">
+              <span className="text-[11px] text-[#8e8e93] font-normal tracking-[-0.01em]">
+                Delivered
+              </span>
+            </div>
+          );
+        })()}
 
         {/* Typing indicator for "them" */}
         {isTyping && typingSender === "them" && (
