@@ -14,12 +14,12 @@ export interface ParsedScript {
 
 export function parseScript(script: string, images?: Record<string, string>): ParsedScript {
   const lines = script.trim().split("\n").filter((l) => l.trim());
-  if (lines.length === 0) return { contact: "Contato", messages: [] };
+  if (lines.length === 0) return { contact: "Contact", messages: [] };
 
-  let contact = "Contato";
+  let contact = "Contact";
   let startIdx = 0;
 
-  if (lines[0].toLowerCase().startsWith("nome:")) {
+  if (lines[0].toLowerCase().startsWith("name:")) {
     contact = lines[0].substring(5).trim();
     startIdx = 1;
   }
@@ -34,13 +34,12 @@ export function parseScript(script: string, images?: Record<string, string>): Pa
     let sender: "me" | "them" = "me";
     let text = line;
 
-    if (line.startsWith("eu:") || line.startsWith("Eu:") || line.startsWith("EU:")) {
+    if (line.startsWith("me:") || line.startsWith("Me:") || line.startsWith("ME:")) {
       sender = "me";
       text = line.substring(3).trim();
-    } else if (line.startsWith("ele:") || line.startsWith("Ele:") || line.startsWith("ELE:") ||
-               line.startsWith("ela:") || line.startsWith("Ela:") || line.startsWith("ELA:")) {
+    } else if (line.startsWith("them:") || line.startsWith("Them:") || line.startsWith("THEM:")) {
       sender = "them";
-      text = line.substring(4).trim();
+      text = line.substring(5).trim();
     } else if (line.startsWith("1:")) {
       sender = "me";
       text = line.substring(2).trim();

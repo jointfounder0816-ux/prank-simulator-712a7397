@@ -19,16 +19,15 @@ interface Props {
   onShowKeyboardChange: (v: boolean) => void;
 }
 
-const EXAMPLE_SCRIPT = `Nome: João
-eu: E aí mano, tudo bem?
-ele: Salve! Tudo certo e vc?
-eu: De boa, escuta só
-eu: Tu viu aquele vídeo que te mandei?
-ele: Qual vídeo?
-eu: O do cara caindo da bike kkkkk
-ele: KKKKKKK sim mano, muito bom
-eu: Rachei demais
-ele: Manda mais desses`;
+const EXAMPLE_SCRIPT = `me: Hey, what's up?
+them: Not much, you?
+me: All good, listen
+me: Did you see that video I sent you?
+them: Which video?
+me: The one of the guy falling off the bike lol
+them: LMAOOO yeah, that was hilarious
+me: I died laughing
+them: Send me more of those`;
 
 export default function ScriptEditor({
   onPlay,
@@ -59,7 +58,7 @@ export default function ScriptEditor({
     if (!files) return;
     const newImages = { ...images };
     Array.from(files).forEach((file) => {
-      const name = `foto${imageCounter.current++}`;
+      const name = `photo${imageCounter.current++}`;
       const url = URL.createObjectURL(file);
       newImages[name] = url;
     });
@@ -100,14 +99,14 @@ export default function ScriptEditor({
       <div>
         <h1 className="text-2xl font-bold text-foreground mb-1">FakeChat</h1>
         <p className="text-sm text-muted-foreground">
-          Simule conversas realistas para seus vídeos
+          Simulate realistic conversations for your videos
         </p>
       </div>
 
       {/* Contact name + avatar */}
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1 block">
-          Nome do contato
+          Contact name
         </label>
         <div className="flex gap-2 items-center">
           <input
@@ -115,7 +114,7 @@ export default function ScriptEditor({
             value={contactName}
             onChange={(e) => onContactNameChange(e.target.value)}
             className="flex-1 bg-muted border-none rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-            placeholder="Nome do contato"
+            placeholder="Contact name"
           />
           <input
             ref={avatarInputRef}
@@ -135,7 +134,7 @@ export default function ScriptEditor({
             type="button"
             onClick={() => avatarInputRef.current?.click()}
             className="relative w-[36px] h-[36px] rounded-full bg-muted flex items-center justify-center shrink-0 overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all group"
-            title="Foto de perfil"
+            title="Profile photo"
           >
             {contactAvatar ? (
               <>
@@ -161,27 +160,26 @@ export default function ScriptEditor({
       {/* Script textarea */}
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1 block">
-          Script da conversa
+          Conversation script
         </label>
         <textarea
           value={script}
           onChange={(e) => setScript(e.target.value)}
           rows={10}
           className="w-full bg-muted border-none rounded-lg px-3 py-2.5 text-sm text-foreground font-mono leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
-          placeholder={`eu: Mensagem do remetente\nele: Mensagem do contato`}
+          placeholder={`me: Your message\nthem: Contact's message`}
         />
         <p className="text-[11px] text-muted-foreground mt-1">
-          Use <code className="bg-muted-foreground/20 px-1 rounded">eu:</code> e{" "}
-          <code className="bg-muted-foreground/20 px-1 rounded">ele:</code> ou{" "}
-          <code className="bg-muted-foreground/20 px-1 rounded">ela:</code> para cada mensagem.
-          Para enviar uma imagem: <code className="bg-muted-foreground/20 px-1 rounded">eu: foto1</code>
+          Use <code className="bg-muted-foreground/20 px-1 rounded">me:</code> and{" "}
+          <code className="bg-muted-foreground/20 px-1 rounded">them:</code> for each message.
+          To send an image: <code className="bg-muted-foreground/20 px-1 rounded">me: photo1</code>
         </p>
       </div>
 
       {/* Image uploads */}
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-2 block">
-          Imagens
+          Images
         </label>
         <input
           ref={fileInputRef}
@@ -224,7 +222,7 @@ export default function ScriptEditor({
                   <button
                     onClick={() => startRename(name)}
                     className="flex items-center gap-0.5 text-[10px] text-muted-foreground hover:text-foreground transition-colors"
-                    title="Renomear"
+                    title="Rename"
                   >
                     <span>{name}</span>
                     <Pencil className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100" />
@@ -239,7 +237,7 @@ export default function ScriptEditor({
               className="w-16 h-16 rounded-lg border-2 border-dashed border-border/60 flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
             >
               <ImagePlus className="w-5 h-5" />
-              <span className="text-[9px]">Adicionar</span>
+              <span className="text-[9px]">Add</span>
             </button>
           </div>
         )}
@@ -250,7 +248,7 @@ export default function ScriptEditor({
             className="flex items-center gap-1.5 bg-muted text-muted-foreground px-3 py-2 rounded-lg text-sm hover:text-foreground transition-colors"
           >
             <ImagePlus className="w-4 h-4" />
-            Adicionar imagem
+            Add image
           </button>
         )}
       </div>
@@ -259,7 +257,7 @@ export default function ScriptEditor({
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1.5 flex items-center gap-1">
           <Zap className="w-3 h-3" />
-          Velocidade: {speed}x
+          Speed: {speed}x
         </label>
         <input
           type="range"
@@ -284,7 +282,7 @@ export default function ScriptEditor({
           className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
         >
           <Play className="w-4 h-4" />
-          {isPlaying ? "Reproduzindo..." : "Reproduzir"}
+          {isPlaying ? "Playing..." : "Play"}
         </button>
         <button
           onClick={() => onExport(script, speed)}
@@ -292,7 +290,7 @@ export default function ScriptEditor({
           className="flex items-center justify-center gap-1.5 bg-destructive text-destructive-foreground px-4 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40"
         >
           <Video className="w-4 h-4" />
-          Exportar
+          Export
         </button>
         <button
           onClick={onReset}
@@ -313,7 +311,7 @@ export default function ScriptEditor({
       >
         <span className="flex items-center gap-2">
           <Keyboard className="w-4 h-4" />
-          Mostrar teclado durante toda a conversa
+          Show keyboard throughout conversation
         </span>
         <span className={`w-8 h-4 rounded-full transition-colors relative flex items-center px-0.5 shrink-0 ${showKeyboard ? "bg-primary" : "bg-muted-foreground/30"}`} style={{ height: 18 }}>
           <span className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${showKeyboard ? "translate-x-[14px]" : "translate-x-0"}`} style={{ width: 14, height: 14 }} />
