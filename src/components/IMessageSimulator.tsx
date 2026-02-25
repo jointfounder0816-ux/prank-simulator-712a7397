@@ -93,7 +93,7 @@ export default function IMessageSimulator({
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto overflow-x-hidden px-[16px] pb-3 hide-scrollbar"
-        style={{ backgroundColor: "#000000", paddingTop: "100px" }}
+        style={{ backgroundColor: "#000000", paddingTop: "120px" }}
       >
         {(() => {
           // Find the index of the last "me" message
