@@ -93,7 +93,7 @@ export default function IMessageSimulator({
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto overflow-x-hidden px-[16px] pb-3 hide-scrollbar"
-        style={{ backgroundColor: "#000000", paddingTop: "120px" }}
+        style={{ backgroundColor: "#000000", paddingTop: "100px" }}
       >
         {(() => {
           // Find the index of the last "me" message
@@ -114,7 +114,7 @@ export default function IMessageSimulator({
             const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender;
             const sameSenderAsPrev = prevMsg && prevMsg.sender === msg.sender;
             const isMe = msg.sender === "me";
-            const marginTop = idx === 0 ? "" : sameSenderAsPrev ? "mt-[2px]" : "mt-[10px]";
+            const marginTop = idx === 0 ? "mt-[20px]" : sameSenderAsPrev ? "mt-[2px]" : "mt-[10px]";
 
             const tailClass = isLastInGroup
               ? isMe ? "imsg-tail-me" : "imsg-tail-them"
